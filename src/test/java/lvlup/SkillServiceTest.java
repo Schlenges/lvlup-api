@@ -1,7 +1,10 @@
 package lvlup;
 
+import lvlup.domain.Battle;
 import lvlup.domain.Skill;
+import lvlup.repository.BattleRepository;
 import lvlup.repository.SkillRepository;
+import lvlup.service.BattleService;
 import lvlup.service.SkillService;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,11 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,8 +24,15 @@ public class SkillServiceTest {
 
     @Autowired
     private SkillService skillService;
+
     @Autowired
     private SkillRepository skillRepository;
+
+    @Autowired
+    private BattleService battleService;
+
+    @Autowired
+    private BattleRepository battleRepository;
 
     private Skill skill;
 
@@ -73,7 +82,7 @@ public class SkillServiceTest {
         assertEquals("Wrong number of xp after level up", 50, updatedSkill.getCurr_xp());
     }
 
-    @Test // cascade delete
+    @Test
     public void shouldDeleteSkillFromDb(){
         saveSkill();
         String name = skill.getName();
@@ -82,6 +91,19 @@ public class SkillServiceTest {
         Skill deletedSkill = skillRepository.findByName(name);
 
         assertNull("Skill should not exist after deletion", deletedSkill);
+    }
+
+    @Test // use of battleService bad practice?
+    public void shouldCascadeDeleteBattles(){
+        saveSkill();
+        String name = skill.getName();
+        Battle battle = new Battle();
+        battleService.create(name, battle);
+
+        skillService.delete(name);
+        Optional<Battle> deletedBattle = battleRepository.findById(battle.getId());
+
+        assertFalse("Battle should not exist after skill deletion", deletedBattle.isPresent());
     }
 
     private void saveSkill(){
