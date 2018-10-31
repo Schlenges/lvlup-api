@@ -5,6 +5,7 @@ import lvlup.domain.Skill;
 import lvlup.repository.BattleRepository;
 import lvlup.repository.SkillRepository;
 import lvlup.service.BattleService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -13,11 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -32,11 +32,17 @@ public class BattleServiceTest {
     @Autowired
     private BattleRepository battleRepository;
 
-    // create battle in db
+    private Skill skill ;
+    private Battle battle;
+
+    @Before
+    public void before(){
+        skill = skillRepository.save(new Skill("Skill" + UUID.randomUUID().toString(), 5, 10));
+        battle = new Battle("Battle:" + UUID.randomUUID().toString(), 20, skill);
+    }
+
     @Test
-    public void shouldSaveBattleInDatabase(){
-        Skill skill = skillRepository.save(new Skill("Skill", 5, 10));
-        Battle battle = new Battle("Battle:" + UUID.randomUUID().toString(), 20, skill);
+    public void shouldSaveBattleInDatabase() {
 
         Battle result = battleService.create(skill.getName(), battle);
 
@@ -45,29 +51,25 @@ public class BattleServiceTest {
 
     }
 
-    // assign it to skill
     @Test
-    public void shouldBeAssignedToSkill(){
-        Skill skill = skillRepository.save(new Skill("Skill", 5, 10));
-        Battle battle = new Battle("Battle:" + UUID.randomUUID().toString(), 20, skill);
+    public void shouldBeAssignedToSkill() {
 
         Battle result = battleService.create(skill.getName(), battle);
 
         assertEquals("Wrong skill ID", battle.getSkill(), result.getSkill());
     }
 
-    // delete battle
     @Test
-    public void shouldDeleteBattleFromDb(){
-        Skill skill = skillRepository.save(new Skill("Skill", 5, 10));
-        Battle battle = new Battle("Battle:" + UUID.randomUUID().toString(), 20, skill);
-        battleService.create(skill.getName(), battle);
+    public void shouldDeleteBattleFromDb() {
+
+        battleService.create(skill.getName(), battle); // muss nicht gefangen werden?
         Long battleId = battle.getId();
 
         battleService.delete(skill.getName(), battleId);
-        Battle deletedBattle = battleRepository.getOne(battleId);
+        // findById um lazy fetch problem zu umgehen
+        // Transactional in battle service
+        Optional<Battle> deletedBattle = battleRepository.findById(battleId);
 
-        assertNull("Battle should not exist after deletion", deletedBattle);
+        assertFalse("Battle should not exist after deletion", deletedBattle.isPresent());
     }
-
 }

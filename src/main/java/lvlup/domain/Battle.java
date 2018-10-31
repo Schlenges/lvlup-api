@@ -1,10 +1,8 @@
 package lvlup.domain;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name="Battles")
@@ -14,7 +12,8 @@ public class Battle extends AbstractPersistable<Long> {
 
     private int xp;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_skill")
     private Skill skill;
 
     public Battle(){}

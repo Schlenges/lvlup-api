@@ -84,7 +84,6 @@ public class SkillServiceTest {
         assertNull("Skill should not exist after deletion", deletedSkill);
     }
 
-
     private void saveSkill(){
         skillRepository.save(skill);
     }

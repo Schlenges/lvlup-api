@@ -2,7 +2,10 @@ package lvlup.domain;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +21,7 @@ public class Skill extends AbstractPersistable<Long> {
 
     private int curr_xp;
 
-    @OneToMany(mappedBy = "skill", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "skill", cascade = CascadeType.REMOVE) //orphan removal?
     private List<Battle> battles;
 
     public Skill(){

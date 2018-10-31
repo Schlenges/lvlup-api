@@ -18,7 +18,7 @@ public class BattleService {
     private SkillRepository skillRepository;
 
     @Transactional // doesn't work without transactional
-    public Battle create(String name, Battle battle){
+    public Battle create(String name, Battle battle) {
         Skill skill = skillRepository.findByName(name);
         battle.setSkill(skill);
 
@@ -30,8 +30,8 @@ public class BattleService {
         return newBattle;
     }
 
-    // @Transactional
-    public void delete(String name, Long battleId){
+    @Transactional
+    public void delete(String name, Long battleId) {
         Skill skill = skillRepository.findByName(name);
         Battle battle = battleRepository.getOne(battleId);
 
