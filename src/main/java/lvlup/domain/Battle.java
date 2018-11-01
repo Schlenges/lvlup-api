@@ -12,16 +12,23 @@ public class Battle extends AbstractPersistable<Long> {
 
     private int xp;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "fk_skill")
     private Skill skill;
 
-    public Battle(){}
+    public Battle(){
+        this.skill = new Skill();
+    }
 
-    public Battle(String description, int xp, Skill skill){
+    public Battle(String description, int xp){
+        this();
         this.description = description;
         this.xp = xp;
-        this.skill = skill;
+    }
+
+    public Battle(String description, int xp, Skill skill){
+        this(description, xp);
+        this.setSkill(skill);
     }
 
 

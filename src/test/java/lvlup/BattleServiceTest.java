@@ -5,9 +5,7 @@ import lvlup.domain.Skill;
 import lvlup.repository.BattleRepository;
 import lvlup.repository.SkillRepository;
 import lvlup.service.BattleService;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +39,10 @@ public class BattleServiceTest {
         battle = new Battle("Battle:" + UUID.randomUUID().toString(), 20, skill);
     }
 
+    // shouldGetBattle
+
+    // shouldListAllBattles
+
     @Test
     public void shouldSaveBattleInDatabase() {
 
@@ -51,7 +53,7 @@ public class BattleServiceTest {
 
     }
 
-    @Test
+    @Test // other assertion? e.g. find skill, get battles, list contains battle
     public void shouldBeAssignedToSkill() {
 
         Battle result = battleService.create(skill.getName(), battle);
@@ -62,13 +64,12 @@ public class BattleServiceTest {
     @Test
     public void shouldDeleteBattleFromDb() {
 
-        battleService.create(skill.getName(), battle); // muss nicht gefangen werden?
+        battleService.create(skill.getName(), battle);
         Long battleId = battle.getId();
 
         battleService.delete(skill.getName(), battleId);
-        // findById um lazy fetch problem zu umgehen
-        // Transactional in battle service
-        Optional<Battle> deletedBattle = battleRepository.findById(battleId);
+        Optional<Battle> deletedBattle = battleRepository.findById(battleId);  // findById um lazy fetch problem zu beheben
+
 
         assertFalse("Battle should not exist after deletion", deletedBattle.isPresent());
     }

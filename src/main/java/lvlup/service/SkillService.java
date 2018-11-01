@@ -13,22 +13,18 @@ public class SkillService {
     @Autowired
     SkillRepository skillRepository;
 
-    // list all skills
     public List<Skill> listAll(){
         return skillRepository.findAll();
     }
 
-    // create and save skill
-    public void create(Skill skill){
-        skillRepository.save(skill); // return skill?
+    public Skill create(Skill skill){
+        return skillRepository.save(skill);
     }
 
-    // get skill by name ---> How does this work with multiple users?
     public Skill getSkill(String name){
         return skillRepository.findByName(name);
     }
 
-    // update xp
     public Skill updateXp(String name, int xp){
         Skill skill = skillRepository.findByName(name);
         int updatedXp = skill.getCurr_xp() + xp;
@@ -40,7 +36,6 @@ public class SkillService {
         return skillRepository.save(skill);
     }
 
-    // delete skill
     public void delete(String name){
         Skill skill = skillRepository.findByName(name);
         skillRepository.delete(skill);

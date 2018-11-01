@@ -1,5 +1,6 @@
 package lvlup.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.CascadeType;
@@ -22,6 +23,7 @@ public class Skill extends AbstractPersistable<Long> {
     private int curr_xp;
 
     @OneToMany(mappedBy = "skill", cascade = CascadeType.REMOVE) //orphan removal?
+    @JsonIgnoreProperties("skill")
     private List<Battle> battles;
 
     public Skill(){

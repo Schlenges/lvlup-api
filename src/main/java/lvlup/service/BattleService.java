@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class BattleService {
@@ -17,7 +18,17 @@ public class BattleService {
     @Autowired
     private SkillRepository skillRepository;
 
-    @Transactional // doesn't work without transactional
+    public List<Battle> listAll(String name){
+        Skill skill = skillRepository.findByName(name);
+        return battleRepository.findBySkill(skill);
+    }
+
+    public Battle getBattle(String name, Long id){
+        Skill skill = skillRepository.findByName(name);
+        return battleRepository.findBySkillAndId(skill, id);
+    }
+
+    @Transactional
     public Battle create(String name, Battle battle) {
         Skill skill = skillRepository.findByName(name);
         battle.setSkill(skill);
