@@ -21,33 +21,33 @@ public class SkillService {
         return skillRepository.save(skill);
     }
 
-    public Skill getSkill(String name){
-        return skillRepository.findByName(name);
+    public Skill getSkill(Long id){
+        return skillRepository.findById(id).get();
     }
 
-    public Skill updateXp(String name, int xp){
-        Skill skill = skillRepository.findByName(name);
-        int updatedXp = skill.getCurr_xp() + xp;
+    public Skill updateXp(Long id, int xp){
+        Skill skill = skillRepository.findById(id).get();
+        int updatedXp = skill.getCurrXp() + xp;
 
         updatedXp = checkForLevelUp(skill, updatedXp);
 
-        skill.setCurr_xp(updatedXp);
+        skill.setCurrXp(updatedXp);
 
         return skillRepository.save(skill);
     }
 
-    public void delete(String name){
-        Skill skill = skillRepository.findByName(name);
+    public void delete(Long id){
+        Skill skill = skillRepository.findById(id).get();
         skillRepository.delete(skill);
     }
 
     private int checkForLevelUp(Skill skill, int updatedXp){
         if(updatedXp >= 100){
-            if(skill.getCurr_lvl() < skill.getMax_lvl()){
-                skill.setCurr_lvl(skill.getCurr_lvl() + 1);
+            if(skill.getCurrLvl() < skill.getMaxLvl()){
+                skill.setCurrLvl(skill.getCurrLvl() + 1);
                 updatedXp -= 100;
             } else{
-                skill.setCurr_lvl(skill.getMax_lvl());
+                skill.setCurrLvl(skill.getMaxLvl());
                 updatedXp = 100;
             }
         }

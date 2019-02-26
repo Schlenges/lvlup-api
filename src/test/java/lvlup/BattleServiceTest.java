@@ -46,7 +46,7 @@ public class BattleServiceTest {
     @Test
     public void shouldSaveBattleInDatabase() {
 
-        Battle result = battleService.create(skill.getName(), battle);
+        Battle result = battleService.create(skill.getId(), battle);
 
         assertNotNull(result);
         assertEquals("Wrong battle ID", battle.getId(), result.getId());
@@ -56,7 +56,7 @@ public class BattleServiceTest {
     @Test // other assertion? e.g. find skill, get battles, list contains battle
     public void shouldBeAssignedToSkill() {
 
-        Battle result = battleService.create(skill.getName(), battle);
+        Battle result = battleService.create(skill.getId(), battle);
 
         assertEquals("Wrong skill ID", battle.getSkill(), result.getSkill());
     }
@@ -64,10 +64,10 @@ public class BattleServiceTest {
     @Test
     public void shouldDeleteBattleFromDb() {
 
-        battleService.create(skill.getName(), battle);
+        battleService.create(skill.getId(), battle);
         Long battleId = battle.getId();
 
-        battleService.delete(skill.getName(), battleId);
+        battleService.delete(skill.getId(), battleId);
         Optional<Battle> deletedBattle = battleRepository.findById(battleId);  // findById um lazy fetch problem zu beheben
 
 

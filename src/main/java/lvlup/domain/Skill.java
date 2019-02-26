@@ -1,5 +1,6 @@
 package lvlup.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -15,27 +16,25 @@ import java.util.List;
 public class Skill extends AbstractPersistable<Long> {
 
     private String name;
+    private int currLvl;
+    private int maxLvl;
+    private int currXp;
 
-    private int curr_lvl;
-
-    private int max_lvl;
-
-    private int curr_xp;
-
-    @OneToMany(mappedBy = "skill", cascade = CascadeType.REMOVE) //orphan removal?
+    @JsonIgnore
     @JsonIgnoreProperties("skill")
+    @OneToMany(mappedBy = "skill", cascade = CascadeType.REMOVE) //mappedBy name of the association-mapping attribute
     private List<Battle> battles;
 
     public Skill(){
-        this.curr_xp = 0;
+        this.currXp = 0;
         this.battles = new ArrayList<>();
     }
 
-    public Skill(String name, int curr_lvl, int max_lvl){
+    public Skill(String name, int currLvl, int maxLvl){
         this();
         this.name = name;
-        this.curr_lvl = curr_lvl;
-        this.max_lvl = max_lvl;
+        this.currLvl = currLvl;
+        this.maxLvl = maxLvl;
     }
 
 
@@ -47,28 +46,28 @@ public class Skill extends AbstractPersistable<Long> {
         this.name = name;
     }
 
-    public int getCurr_lvl() {
-        return curr_lvl;
+    public int getCurrLvl() {
+        return currLvl;
     }
 
-    public void setCurr_lvl(int curr_lvl) {
-        this.curr_lvl = curr_lvl;
+    public void setCurrLvl(int currLvl) {
+        this.currLvl = currLvl;
     }
 
-    public int getMax_lvl() {
-        return max_lvl;
+    public int getMaxLvl() {
+        return maxLvl;
     }
 
-    public void setMax_lvl(int max_lvl) {
-        this.max_lvl = max_lvl;
+    public void setMaxLvl(int maxLvl) {
+        this.maxLvl = maxLvl;
     }
 
-    public int getCurr_xp() {
-        return curr_xp;
+    public int getCurrXp() {
+        return currXp;
     }
 
-    public void setCurr_xp(int curr_xp) {
-        this.curr_xp = curr_xp;
+    public void setCurrXp(int currXp) {
+        this.currXp = currXp;
     }
 
     public List<Battle> getBattles() {

@@ -59,7 +59,7 @@ public class SkillServiceTest {
 
         Skill updatedSkill = updateSkill(xp);
 
-        assertEquals("Wrong number of experience points", xp, updatedSkill.getCurr_xp());
+        assertEquals("Wrong number of experience points", xp, updatedSkill.getCurrXp());
     }
 
     @Test
@@ -69,7 +69,7 @@ public class SkillServiceTest {
         
         Skill updatedSkill = updateSkill(xp);
 
-        assertEquals("Wrong level after level up", 5, updatedSkill.getCurr_lvl());
+        assertEquals("Wrong level after level up", 5, updatedSkill.getCurrLvl());
     }
 
     @Test
@@ -79,28 +79,28 @@ public class SkillServiceTest {
 
         Skill updatedSkill = updateSkill(xp);
 
-        assertEquals("Wrong number of xp after level up", 50, updatedSkill.getCurr_xp());
+        assertEquals("Wrong number of xp after level up", 50, updatedSkill.getCurrXp());
     }
 
     @Test
     public void shouldDeleteSkillFromDb(){
         saveSkill();
-        String name = skill.getName();
+        Long id = skill.getId();
 
-        skillService.delete(name);
-        Skill deletedSkill = skillRepository.findByName(name);
+        skillService.delete(id);
+        Optional<Skill> deletedSkill = skillRepository.findById(id);
 
-        assertNull("Skill should not exist after deletion", deletedSkill);
+        assertFalse("Skill should not exist after deletion", deletedSkill.isPresent());
     }
 
     @Test // use of battleService bad practice?
     public void shouldCascadeDeleteBattles(){
         saveSkill();
-        String name = skill.getName();
+        Long skillId = skill.getId();
         Battle battle = new Battle();
-        battleService.create(name, battle);
+        battleService.create(skillId, battle);
 
-        skillService.delete(name);
+        skillService.delete(skillId);
         Optional<Battle> deletedBattle = battleRepository.findById(battle.getId());
 
         assertFalse("Battle should not exist after skill deletion", deletedBattle.isPresent());
@@ -111,6 +111,6 @@ public class SkillServiceTest {
     }
 
     private Skill updateSkill(int xp){
-        return skillService.updateXp(skill.getName(), xp);
+        return skillService.updateXp(skill.getId(), xp);
     }
 }

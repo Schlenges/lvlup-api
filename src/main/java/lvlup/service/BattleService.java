@@ -18,19 +18,19 @@ public class BattleService {
     @Autowired
     private SkillRepository skillRepository;
 
-    public List<Battle> listAll(String name){
-        Skill skill = skillRepository.findByName(name);
+    public List<Battle> listAll(Long skillId){
+        Skill skill = skillRepository.findById(skillId).get();
         return battleRepository.findBySkill(skill);
     }
 
-    public Battle getBattle(String name, Long id){
-        Skill skill = skillRepository.findByName(name);
+    public Battle getBattle(Long skillId, Long id){
+        Skill skill = skillRepository.findById(skillId).get();
         return battleRepository.findBySkillAndId(skill, id);
     }
 
     @Transactional
-    public Battle create(String name, Battle battle) {
-        Skill skill = skillRepository.findByName(name);
+    public Battle create(Long skillId, Battle battle) {
+        Skill skill = skillRepository.findById(skillId).get();
         battle.setSkill(skill);
 
         Battle newBattle = battleRepository.save(battle);
@@ -42,9 +42,9 @@ public class BattleService {
     }
 
     @Transactional
-    public void delete(String name, Long battleId) {
-        Skill skill = skillRepository.findByName(name);
-        Battle battle = battleRepository.getOne(battleId);
+    public void delete(Long skillId, Long battleId) {
+        Skill skill = skillRepository.findById(skillId).get();
+        Battle battle = battleRepository.findBySkillAndId(skill, battleId);
 
         skill.getBattles().remove(battle);
         skillRepository.save(skill);

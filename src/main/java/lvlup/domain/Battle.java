@@ -13,7 +13,7 @@ public class Battle extends AbstractPersistable<Long> {
     private int xp;
 
     @ManyToOne
-    @JoinColumn(name = "fk_skill")
+    @JoinColumn(name = "fk_skill") // Battles table has column named fk_skill with the foreign key of the skill
     private Skill skill;
 
     public Battle(){
