@@ -9,34 +9,33 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/skills")
+// @RequestMapping("/skills")
 public class SkillController {
 
     @Autowired
     private SkillService skillService;
 
-
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/", "/skills"}, method = RequestMethod.GET, produces = "application/json")
     public List<Skill> getSkills(){
         return skillService.listAll();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/skills/{id}", method = RequestMethod.GET, produces = "application/json")
     public Skill getSkill(@PathVariable Long id){
         return skillService.getSkill(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/skills", method = RequestMethod.POST, produces = "application/json")
     public Skill createSkill(@RequestBody Skill skill){
         return skillService.create(skill);
     }
 
-    @RequestMapping(value = "/{id}/{xp}", method = RequestMethod.PUT, produces = "application/json")
-    public Skill updateSkill(@PathVariable Long id, @PathVariable int xp){
+    @RequestMapping(value = "/skills/{id}", method = RequestMethod.PUT, produces = "application/json")
+    public Skill updateSkill(@PathVariable Long id, @RequestParam int xp){
         return skillService.updateXp(id, xp);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    @RequestMapping(value = "/skills/{id}", method = RequestMethod.DELETE, produces = "application/json")
     public void deleteSkill(@PathVariable Long id){
         skillService.delete(id);
     }

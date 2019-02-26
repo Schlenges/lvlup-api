@@ -4,6 +4,8 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="Battles")
 public class Battle extends AbstractPersistable<Long> {
@@ -14,6 +16,7 @@ public class Battle extends AbstractPersistable<Long> {
 
     @ManyToOne
     @JoinColumn(name = "fk_skill") // Battles table has column named fk_skill with the foreign key of the skill
+    @JsonIgnore
     private Skill skill;
 
     public Battle(){
