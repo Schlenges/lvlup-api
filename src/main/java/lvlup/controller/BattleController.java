@@ -15,22 +15,22 @@ public class BattleController {
     @Autowired
     private BattleService battleService;
 
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @GetMapping
     public List<Battle> getBattles(@PathVariable Long skillId){
         return battleService.listAll(skillId);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping("/{id}")
     public Battle getBattle(@PathVariable Long skillId, @PathVariable Long id){
         return battleService.getBattle(skillId, id);
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
+    @PostMapping
     public Battle createBattle(@PathVariable Long skillId, @RequestBody Battle battle){
         return battleService.create(skillId, battle);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    @DeleteMapping("/{id}")
     public void deleteBattle(@PathVariable Long skillId, @PathVariable Long id){
         battleService.delete(skillId, id);
     }

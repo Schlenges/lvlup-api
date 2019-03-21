@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class SkillService {
@@ -22,7 +23,14 @@ public class SkillService {
     }
 
     public Skill getSkill(Long id){
-        return skillRepository.findById(id).get();
+        try{
+            return skillRepository.findById(id).get();
+        } catch(Exception e){
+            if(e instanceof NoSuchElementException){
+                System.out.println("No skill with this id exists");
+            }
+            return null;
+        }
     }
 
     public Skill updateXp(Long id, int xp){
