@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class BattleService {
@@ -19,13 +20,27 @@ public class BattleService {
     private SkillRepository skillRepository;
 
     public List<Battle> listAll(Long skillId){
-        Skill skill = skillRepository.findById(skillId).get();
-        return battleRepository.findBySkill(skill);
+        try{
+            Skill skill = skillRepository.findById(skillId).get();
+            return battleRepository.findBySkill(skill);
+        } catch(Exception e){
+            if(e instanceof NoSuchElementException){
+                System.out.println("No skill with this id exists");
+            }
+            return null;
+        }
     }
 
     public Battle getBattle(Long skillId, Long id){
-        Skill skill = skillRepository.findById(skillId).get();
-        return battleRepository.findBySkillAndId(skill, id);
+        try{
+            Skill skill = skillRepository.findById(skillId).get();
+            return battleRepository.findBySkillAndId(skill, id);
+        } catch(Exception e){
+            if(e instanceof NoSuchElementException){
+                System.out.println("No battle with this id exists");
+            }
+            return null;
+        }
     }
 
     @Transactional
