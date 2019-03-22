@@ -62,7 +62,7 @@ Example:
 <br>
 
 <dl>
-<dt>PUT <code>/skills/:skillId/:xp</code></dt>  
+<dt>PUT <code>/skills/:skillId?:xp</code></dt>  
 <dd>Updates the experience points of the selected skill by the value given as the path parameter <b>xp</b>.<br>
 Example:
 <code>
