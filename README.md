@@ -1,8 +1,24 @@
 # LVL UP API
 
 ## Installation
-Simply clone the repo, open the directory in a terminal and run ```gradle build``` to build the project, then  
-```java -jar /build/libs/lvlup.jar``` to start the application.
+Simply clone the repo, open the directory in a terminal and run  
+
+for Unix (Linux, OSX, ...)
+```
+./gradlew build
+```
+
+for Batch (Windows)
+```
+./gradlew.bat build
+```
+<br>
+
+To start the application, run:
+
+```
+java -jar /build/libs/lvlup.jar
+```
 
 ## Usage
 
